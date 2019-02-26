@@ -116,4 +116,44 @@ class Block
             $this->categoryRepository->save($categoryId);
         }
     }
+
+    public function installPB(array $fixtures, int $numEntries)
+    {
+        foreach ($fixtures as $fileName) {
+            $fileName = $this->fixtureManager->getFixture($fileName);
+            if (!file_exists($fileName)) {
+                continue;
+            }
+
+            $rows = $this->csvReader->getData($fileName);
+            $header = array_shift($rows);
+
+            foreach ($rows as $row) {
+                $title = '';
+                $identifier = '';
+                $data = [];
+                foreach ($row as $key => $value) {
+                    if ($header[$key] == 'title') {
+                        $title = $value;
+                    } else if ($header[$key] == 'identifier') {
+                        $identifier = $value;
+                    }
+                    $data[$header[$key]] = $value;
+                }
+                $row = $data;
+                $data = $this->converter->convertRow($row);
+                $cmsBlock = $this->saveCmsBlock($data['block']);
+                $cmsBlock->unsetData();
+            }
+            for ($count = 0; $count <= $numEntries; $count++) {
+                $data['title'] = $title . '_' . $count;
+                $data['identifier'] = $identifier . '_' . $count;
+                $row = $data;
+
+                $this->saveCmsBlock($row);
+            }
+        }
+
+    }
+
 }
