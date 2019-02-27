@@ -47,6 +47,6 @@ class RecurringData implements InstallDataInterface
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         $this->page->installPB(['Magento_CmsSampleData::fixtures/pages/pagebuilder_pages.csv'], 10000);
-        $this->block->installPB(['Magento_CmsSampleData::fixtures/pages/pagebuilder_blocks.csv'], 10000);
+        $this->block->installPB(['Magento_CmsSampleData::fixtures/blocks/pagebuilder_blocks.csv'], 10000);
     }
 }

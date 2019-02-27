@@ -142,8 +142,6 @@ class Block
                 }
                 $row = $data;
                 $data = $this->converter->convertRow($row);
-                $cmsBlock = $this->saveCmsBlock($data['block']);
-                $cmsBlock->unsetData();
             }
             for ($count = 0; $count <= $numEntries; $count++) {
                 $data['title'] = $title . '_' . $count;
